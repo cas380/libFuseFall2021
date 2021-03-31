@@ -31,7 +31,7 @@ int contains_user(uint64_t user_id){
 }
 
 // See documentation in database.h
-int add_usage_record(uint64_t user_id, int64_t total_change){
+int update_usage_record(uint64_t user_id, int64_t total_change){
     sqlite3_stmt *stmt;
     int re = sqlite3_prepare_v2(db, "UPDATE USER_QUOTAS SET usage_total = usage_total + ? WHERE user_id = ?", -1, &stmt, 0);    
     if (re != SQLITE_OK) {
@@ -48,12 +48,11 @@ int add_usage_record(uint64_t user_id, int64_t total_change){
         log_data("Failed to fetch data (%d): %s\n", re, sqlite3_errmsg(db));
     }
 
-    print_all();
     return re == SQLITE_DONE;
 }
 
 // See documentation in database.h
-int add_file_record(uint64_t user_id, int64_t total_change){
+int update_file_record(uint64_t user_id, int64_t total_change){
     sqlite3_stmt *stmt;
     int re = sqlite3_prepare_v2(db, "UPDATE USER_QUOTAS SET file_total = file_total + ? WHERE user_id = ?", -1, &stmt, 0);    
     if (re != SQLITE_OK) {
