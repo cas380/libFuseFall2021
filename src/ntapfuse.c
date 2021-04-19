@@ -20,6 +20,7 @@
  */
 #define _XOPEN_SOURCE 500
 
+#include "common.h"
 #include "ntapfuse_ops.h"
 
 #include <stdio.h>
@@ -68,7 +69,7 @@ void
 usage ()
 {
   printf ("ntapfuse mount <basedir> <mountpoint>\n");
-  
+  printf ("ntapfuse mount <basedir> <mountpoint> <default-byte-quota> <default-inode-quota>\n");  
   exit (0);
 }
 
@@ -82,31 +83,46 @@ main (int argc, char *argv[])
   char *path = argv[2];
 
   char fpath[PATH_MAX];
-  if (realpath (path, fpath) == NULL)
-    perror ("main_realpath");
+  if (realpath (path, fpath) == NULL) perror ("main_realpath");
 
   if (strcmp (command, "mount") == 0)
     {
-      if (argc < 4)
-	usage ();
+      if (argc != 4 && argc != 6){
+        usage();
+      }
+      if (realpath (argv[2], base) == NULL){
+        perror ("main_realpath");
+      }
 
-      if (realpath (argv[2], base) == NULL)
-	perror ("main_realpath");
+      if(argc == 6){
+        uint64_t new_usage = strtoull(argv[4], NULL, 10);
+        uint64_t new_file = strtoull(argv[5], NULL, 10);
+        argc -= 2;
+
+        if(new_usage == 0){
+          printf("Invalid integer argument for BYTE_QUOTA.\n");
+          usage();
+        }
+        if(new_file == 0){
+          printf("Invalid integer argument for INODE_QUOTA.\n");
+          usage();
+        }
+
+        DEFAULT_BYTE_QUOTA = new_usage;
+        DEFAULT_FILE_QUOTA = new_file;
+      }
 
       int i = 1;
       for (; i < argc; i++)
 	argv[i] = argv[i + 2];
       argc -= 2;
-
+      
       int ret = fuse_main (argc, argv, &ntapfuse_ops, base);
-
-      if (ret < 0)
-	perror ("fuse_main");
-
+      if (ret < 0)	perror ("fuse_main");
       return ret;
     }
-  else
-    usage ();
-
+  else {
+    usage();
+  }
   return 0;
 }

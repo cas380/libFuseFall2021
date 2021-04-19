@@ -1,7 +1,7 @@
 #!/bin/bash
 sudo make install
 make clean
-fusermount -u mount
+fusermount -u mount -l
 
 rm -r base/*
 rm -r mount/*
