@@ -70,7 +70,7 @@ static unsigned int fnv1a_hash_uid(const void *in, unsigned int seed)
 	size_t	     i;
 
 	log_data("----Hashing the UID key: %d\n", *((int*)in));
-	for (i=0; i < sizeof(in); i++) {
+	for (i=0; i < sizeof(*(uid_t *)in); i++) {
 		c = ((unsigned char *)in)[i];
 		h ^= c;
 		h *= 16777619;
