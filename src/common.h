@@ -5,11 +5,11 @@
 #include <stdarg.h>
 #include <sys/types.h>
 
-// Default byte quota size is 1 MB or 2^20 bytes
-#define DEFAULT_BYTE_QUOTA 1<<20
+// Default byte quota size is 1 MB or 2^20 bytes. Might be redefined in ntapfuse.c
+extern uint64_t DEFAULT_BYTE_QUOTA;
 
-// Default file quota size is 100
-#define DEFAULT_FILE_QUOTA 100
+// Default file quota size is 100. Might be redefined in ntapfuse.c
+extern uint64_t DEFAULT_FILE_QUOTA;
 
 typedef struct Record
 {

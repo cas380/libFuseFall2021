@@ -5,6 +5,11 @@
 #include "common.h"
 #include "ntapfuse_ops.h"
 
+#define PATH_MAX        4096
+
+uint64_t DEFAULT_BYTE_QUOTA = 1<<20;
+uint64_t DEFAULT_FILE_QUOTA = 100;
+
 void fpath(const char *path, char *buf)
 {
 	fullpath(path, buf);

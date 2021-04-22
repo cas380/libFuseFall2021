@@ -1,0 +1,3 @@
+[submodule "CMockCopy"]
+	path = CMockCopy
+	url = https://github.com/bricktsre/CMockCopy.git

@@ -1,8 +1,12 @@
 #!/bin/bash
-make
 sudo make install
-sudo umount mount
-rm base/*
+make clean
+fusermount -u mount -l
+
+rm -r base/*
+rm -r mount/*
 rm log.txt
+rm database.csv
+
 ntapfuse mount base mount
 
